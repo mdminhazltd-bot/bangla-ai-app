@@ -1,0 +1,121 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+}
+
+.login-container {
+    background: #1e1e2f;
+    padding: 40px;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    border: 1px solid #333;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.logo h1 {
+    color: #fff;
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.logo p {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.tab-buttons {
+    display: flex;
+    margin-bottom: 25px;
+    background: #2a2a3d;
+    border-radius: 10px;
+    padding: 4px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 10px;
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.tab-btn.active {
+    background: #6366f1;
+    color: #fff;
+}
+
+.auth-form.hidden {
+    display: none;
+}
+
+.input-group {
+    margin-bottom: 18px;
+}
+
+.input-group label {
+    display: block;
+    color: #cbd5e1;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 14px;
+    background: #2a2a3d;
+    border: 1px solid #3f3f56;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #6366f1;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 13px;
+    background: #6366f1;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 5px;
+}
+
+.submit-btn:hover {
+    background: #4f46e5;
+}
+
+.error-msg {
+    color: #f87171;
+    font-size: 13px;
+    margin-bottom: 10px;
+    min-height: 16px;
+}

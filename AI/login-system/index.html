@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>লগইন - বাংলা AI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <h1>বাংলা AI 🤖</h1>
+            <p>আপনার বাংলা ভাষার সহায়ক</p>
+        </div>
+
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="showLogin()">লগইন</button>
+            <button class="tab-btn" onclick="showSignup()">সাইনআপ</button>
+        </div>
+
+        <!-- লগইন ফর্ম -->
+        <form id="loginForm" class="auth-form">
+            <div class="input-group">
+                <label>ইমেইল</label>
+                <input type="email" id="loginEmail" placeholder="আপনার ইমেইল লিখুন" required>
+            </div>
+            <div class="input-group">
+                <label>পাসওয়ার্ড</label>
+                <input type="password" id="loginPassword" placeholder="পাসওয়ার্ড লিখুন" required>
+            </div>
+            <p class="error-msg" id="loginError"></p>
+            <button type="submit" class="submit-btn">লগইন করুন</button>
+        </form>
+
+        <!-- সাইনআপ ফর্ম -->
+        <form id="signupForm" class="auth-form hidden">
+            <div class="input-group">
+                <label>নাম</label>
+                <input type="text" id="signupName" placeholder="আপনার নাম লিখুন" required>
+            </div>
+            <div class="input-group">
+                <label>ইমেইল</label>
+                <input type="email" id="signupEmail" placeholder="আপনার ইমেইল লিখুন" required>
+            </div>
+            <div class="input-group">
+                <label>পাসওয়ার্ড</label>
+                <input type="password" id="signupPassword" placeholder="পাসওয়ার্ড লিখুন" required>
+            </div>
+            <p class="error-msg" id="signupError"></p>
+            <button type="submit" class="submit-btn">অ্যাকাউন্ট তৈরি করুন</button>
+        </form>
+    </div>
+
+    <script>
+        function showLogin() {
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('signupForm').classList.add('hidden');
+            document.querySelectorAll('.tab-btn')[0].classList.add('active');
+            document.querySelectorAll('.tab-btn')[1].classList.remove('active');
+        }
+
+        function showSignup() {
+            document.getElementById('signupForm').classList.remove('hidden');
+            document.getElementById('loginForm').classList.add('hidden');
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            document.querySelectorAll('.tab-btn')[0].classList.remove('active');
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const res = await fetch('http://127.0.0.1:5000/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    window.location.href = '../frontend/index.html';
+                } else {
+                    document.getElementById('loginError').textContent = data.error || 'লগইন ব্যর্থ হয়েছে';
+                }
+            } catch (err) {
+                document.getElementById('loginError').textContent = 'সার্ভারের সাথে সংযোগ করা যায়নি';
+            }
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+
+            try {
+                const res = await fetch('http://127.0.0.1:5000/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    alert('অ্যাকাউন্ট তৈরি হয়েছে! এখন লগইন করুন।');
+                    showLogin();
+                } else {
+                    document.getElementById('signupError').textContent = data.error || 'সাইনআপ ব্যর্থ হয়েছে';
+                }
+            } catch (err) {
+                document.getElementById('signupError').textContent = 'সার্ভারের সাথে সংযোগ করা যায়নি';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বাংলা AI চ্যাট</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>🤖 বাংলা AI</h1>
+            <p>আপনার প্রশ্নের উত্তর দিতে প্রস্তুত</p>
+        </div>
+
+        <div class="chat-box" id="chatBox">
+            <div class="message bot-message">
+                <div class="bubble">
+                    আসসালামু আলাইকুম! আমি আপনার বাংলা AI অ্যাসিস্ট্যান্ট। যেকোনো প্রশ্ন জিজ্ঞেস করতে পারেন। 😊
+                </div>
+            </div>
+        </div>
+
+        <div class="typing-indicator hidden" id="typingIndicator">
+            AI লিখছে...
+        </div>
+
+        <form class="chat-input-area" id="chatForm">
+            <input
+                type="text"
+                id="userInput"
+                placeholder="এখানে আপনার প্রশ্ন লিখুন..."
+                autocomplete="off"
+                required
+            >
+            <button type="submit" id="sendBtn">পাঠান</button>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

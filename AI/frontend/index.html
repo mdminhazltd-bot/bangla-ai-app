@@ -12,41 +12,112 @@
      crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="chat-container">
-        <div class="chat-header">
-            <div class="header-mark">
-                <svg viewBox="0 0 24 24" fill="none"><path d="M12 3c-4 0-7 2.7-7 6.2 0 2.1 1.1 4 2.9 5.1L7 20l4.3-2.1c.2 0 .5 0 .7 0 4 0 7-2.7 7-6.2S16 3 12 3z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>
-            </div>
-            <h1>বাংলা AI</h1>
-            <p>আপনার প্রশ্নের উত্তর দিতে প্রস্তুত</p>
-        </div>
 
-        <div class="chat-box" id="chatBox">
-            <div class="message bot-message">
-                <div class="bubble">
-                    আসসালামু আলাইকুম! আমি আপনার বাংলা AI অ্যাসিস্ট্যান্ট। যেকোনো প্রশ্ন জিজ্ঞেস করতে পারেন। 😊
-                </div>
-            </div>
-        </div>
+<div class="app">
 
-        <div class="typing-indicator hidden" id="typingIndicator">
-            AI লিখছে...
-        </div>
-
-        <form class="chat-input-area" id="chatForm">
-            <input
-                type="text"
-                id="userInput"
-                placeholder="এখানে আপনার প্রশ্ন লিখুন..."
-                autocomplete="off"
-                required
-            >
-            <button type="submit" id="sendBtn">পাঠান</button>
-        </form>
-
-        <div class="footnote">🔒 আপনার তথ্য সম্পূর্ণ নিরাপদ এবং গোপন রাখা হবে</div>
+  <div class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 3c-4 0-7 2.7-7 6.2 0 2.1 1.1 4 2.9 5.1L7 20l4.3-2.1c.2 0 .5 0 .7 0 4 0 7-2.7 7-6.2S16 3 12 3z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="brand-text">
+        <div class="name">বাংলা AI</div>
+        <div class="tag">আপনার AI সহযোগী</div>
+      </div>
     </div>
 
-    <script src="script.js"></script>
+    <button class="new-chat" id="newChatBtn"><span>নতুন চ্যাট</span><span>+</span></button>
+
+    <div class="nav">
+      <div class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.4 0-2.7-.3-3.9-.9L3 20l1-5.4A8.5 8.5 0 1 1 21 11.5Z"/></svg>
+        চ্যাট ইতিহাস
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2.5l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.3l-5.8 3.1 1.1-6.5-4.7-4.6 6.5-.9L12 2.5z"/></svg>
+        পছন্দসমূহ
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.9 2.9l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.9l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.9-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.9l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+        সেটিংস
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+        আমাদের সম্পর্কে
+      </div>
+    </div>
+
+    <div class="history-block">
+      <div class="history-label">সাম্প্রতিক</div>
+      <div class="history-item">রান্নার রেসিপি খুঁজছি</div>
+      <div class="history-item">ইংরেজি অনুবাদ সাহায্য</div>
+      <div class="history-item">প্রবন্ধ লেখার টিপস</div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="upgrade-card">
+        <div class="title">👑 প্রিমিয়াম আপগ্রেড করুন</div>
+        <div class="desc">আরও ফিচার এবং দ্রুত রেসপন্স পান</div>
+        <button class="upgrade-btn">আপগ্রেড করুন</button>
+      </div>
+      <div class="theme-row">
+        <span>🌙 ডার্ক মোড</span>
+        <div class="switch"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <h1>👋 আপনাকে স্বাগতম!</h1>
+        <p>আমি আপনার বাংলা AI অ্যাসিস্ট্যান্ট। আপনি যা জানতে চান, আমাকে জিজ্ঞেস করুন।</p>
+      </div>
+      <div class="model-pill"><span class="dot"></span> বাংলা AI · প্রো</div>
+    </div>
+
+    <div class="chat-box" id="chatBox">
+      <div class="message bot-message">
+        <div class="bubble">
+          আসসালামু আলাইকুম! আমি আপনার বাংলা AI অ্যাসিস্ট্যান্ট। যেকোনো প্রশ্ন জিজ্ঞেস করতে পারেন। 😊
+        </div>
+      </div>
+    </div>
+
+    <div class="typing-indicator hidden" id="typingIndicator">
+      AI লিখছে...
+    </div>
+
+    <form class="chat-input-area" id="chatForm">
+      <div class="tool-icons">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a7 7 0 0 1-14 0M12 18v3"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>
+      </div>
+      <input
+          type="text"
+          id="userInput"
+          placeholder="এখানে আপনার প্রশ্ন লিখুন..."
+          autocomplete="off"
+          required
+      >
+      <button type="submit" id="sendBtn">পাঠান</button>
+    </form>
+
+    <div class="footnote">🔒 আপনার তথ্য সম্পূর্ণ নিরাপদ এবং গোপন রাখা হবে</div>
+  </div>
+
+</div>
+
+<script>
+  document.getElementById('newChatBtn').addEventListener('click', function(){
+    document.getElementById('chatBox').innerHTML =
+      '<div class="message bot-message"><div class="bubble">নতুন চ্যাট শুরু হয়েছে। আপনার প্রশ্ন লিখুন।</div></div>';
+  });
+  document.querySelector('.switch').addEventListener('click', function(){
+    this.classList.toggle('off');
+  });
+</script>
+<script src="script.js"></script>
 </body>
 </html>

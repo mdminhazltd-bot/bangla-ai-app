@@ -114,10 +114,117 @@
     document.getElementById('chatBox').innerHTML =
       '<div class="message bot-message"><div class="bubble">নতুন চ্যাট শুরু হয়েছে। আপনার প্রশ্ন লিখুন।</div></div>';
   });
-  document.querySelector('.switch').addEventListener('click', function(){
-    this.classList.toggle('off');
-  });
 </script>
 <script src="script.js"></script>
+
+<script>
+(function(){
+  // ---- লগইন চেক (auth guard) ----
+  const savedUser = JSON.parse(localStorage.getItem('user') || 'null');
+  // যদি user না থাকে, চাইলে নিচের লাইন আনকমেন্ট করে লগইন পেজে পাঠিয়ে দিতে পারো:
+  // if(!savedUser){ window.location.href = '../login-system/index.html'; return; }
+
+  // ---- Modal তৈরি (dynamically, HTML ফাইল টাচ করা হয়নি) ----
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay hidden';
+  overlay.id = 'modalOverlay';
+  overlay.innerHTML = `
+    <div class="modal-box" id="modalBox">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div id="modalContent"></div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  const modalContent = overlay.querySelector('#modalContent');
+
+  function openModal(html){
+    modalContent.innerHTML = html;
+    overlay.classList.remove('hidden');
+  }
+  function closeModal(){
+    overlay.classList.add('hidden');
+  }
+  overlay.querySelector('#modalClose').addEventListener('click', closeModal);
+  overlay.addEventListener('click', function(e){
+    if(e.target === overlay) closeModal();
+  });
+
+  window.logoutUser = function(){
+    localStorage.removeItem('user');
+    window.location.href = '../login-system/index.html';
+  };
+
+  // ---- Sidebar nav বাটনগুলো ধরা (index অনুযায়ী, HTML অপরিবর্তিত) ----
+  const navItems = document.querySelectorAll('.nav-item');
+  // 0 = চ্যাট ইতিহাস, 1 = পছন্দসমূহ, 2 = সেটিংস, 3 = আমাদের সম্পর্কে
+
+  if(navItems[0]){
+    navItems[0].addEventListener('click', function(){
+      navItems.forEach(n => n.classList.remove('active'));
+      this.classList.add('active');
+      closeModal();
+    });
+  }
+
+  if(navItems[1]){
+    navItems[1].addEventListener('click', function(){
+      navItems.forEach(n => n.classList.remove('active'));
+      this.classList.add('active');
+      openModal(`
+        <h2>⭐ পছন্দসমূহ</h2>
+        <p class="modal-sub">আপনার প্রিয় প্রম্পট ও কনভারসেশন এখানে দেখা যাবে।</p>
+        <div class="empty-state">এখনো কিছু সংরক্ষণ করা হয়নি।</div>
+      `);
+    });
+  }
+
+  if(navItems[2]){
+    navItems[2].addEventListener('click', function(){
+      navItems.forEach(n => n.classList.remove('active'));
+      this.classList.add('active');
+      openModal(`
+        <h2>⚙️ সেটিংস</h2>
+        <p class="modal-sub">${savedUser ? 'লগইন করা আছে: ' + (savedUser.email || savedUser.name || '') : 'কোনো একাউন্টে লগইন নেই'}</p>
+        <button class="modal-action-btn danger" onclick="logoutUser()">লগআউট করুন</button>
+      `);
+    });
+  }
+
+  if(navItems[3]){
+    navItems[3].addEventListener('click', function(){
+      navItems.forEach(n => n.classList.remove('active'));
+      this.classList.add('active');
+      openModal(`
+        <h2>ℹ️ আমাদের সম্পর্কে</h2>
+        <p class="modal-sub">বাংলা AI — আপনার বাংলা ভাষার AI সহযোগী। প্রশ্ন জিজ্ঞেস করুন, অনুবাদ করুন, লেখায় সাহায্য নিন — সবকিছু বাংলায়।</p>
+      `);
+    });
+  }
+
+  // ---- প্রিমিয়াম আপগ্রেড বাটন ----
+  const upgradeBtn = document.querySelector('.upgrade-btn');
+  if(upgradeBtn){
+    upgradeBtn.addEventListener('click', function(){
+      openModal(`
+        <h2>👑 প্রিমিয়াম আপগ্রেড</h2>
+        <p class="modal-sub">আরও দ্রুত রেসপন্স, বেশি ব্যবহার এবং এক্সক্লুসিভ ফিচার পেতে প্রিমিয়ামে আপগ্রেড করুন।</p>
+        <button class="modal-action-btn">শীঘ্রই আসছে</button>
+      `);
+    });
+  }
+
+  // ---- ডার্ক/লাইট মোড টগল ----
+  const themeSwitch = document.querySelector('.switch');
+  if(themeSwitch){
+    themeSwitch.addEventListener('click', function(){
+      this.classList.toggle('off');
+      const isOff = this.classList.contains('off');
+      document.body.setAttribute('data-theme', isOff ? 'light' : 'dark');
+    });
+  }
+})();
+</script>
+
 </body>
 </html>

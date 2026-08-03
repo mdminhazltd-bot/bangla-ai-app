@@ -11,9 +11,19 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
-# ডাটাবেজ কনফিগারেশন (database ফোল্ডারে users.db নামে ফাইল বানাবে)
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(basedir, 'database', 'users.db')}"
+# ডাটাবেজ কনফিগারেশন
+database_url = os.environ.get('DATABASE_URL')
+
+if database_url:
+    # Render PostgreSQL দেয় postgres:// দিয়ে, SQLAlchemy চায় postgresql://
+    if database_url.startswith("postgres://"):
+        database_url = database_url.replace("postgres://", "postgresql://", 1)
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+else:
+    # লোকাল টেস্টের জন্য SQLite ব্যবহার হবে
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(basedir, 'database', 'users.db')}"
+
 db = SQLAlchemy(app)
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
@@ -28,7 +38,7 @@ class User(db.Model):
 with app.app_context():
     db.create_all()
 
-# হোমপেজ রুট (404 এড়ানোর জন্য)
+# হোমপেজ রুট
 @app.route("/")
 def home():
     return jsonify({"message": "বাংলা AI ব্যাকএন্ড চলছে ✅"})

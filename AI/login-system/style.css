@@ -10,7 +10,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #0f172a, #1e293b);
+    background: #0d0b1a;
 }
 
 .login-container {
@@ -21,6 +21,22 @@ body {
     max-width: 400px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
     border: 1px solid #333;
+}
+
+.logo-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 20px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-icon svg {
+    width: 28px;
+    height: 28px;
 }
 
 .logo {
@@ -60,7 +76,7 @@ body {
 }
 
 .tab-btn.active {
-    background: #6366f1;
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
     color: #fff;
 }
 
@@ -92,13 +108,13 @@ body {
 }
 
 .input-group input:focus {
-    border-color: #6366f1;
+    border-color: #8b5cf6;
 }
 
 .submit-btn {
     width: 100%;
     padding: 13px;
-    background: #6366f1;
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
     border: none;
     border-radius: 8px;
     color: #fff;
@@ -110,7 +126,7 @@ body {
 }
 
 .submit-btn:hover {
-    background: #4f46e5;
+    opacity: 0.9;
 }
 
 .error-msg {

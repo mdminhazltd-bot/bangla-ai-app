@@ -1,4 +1,4 @@
-const API_URL = "http://127.0.0.1:5000/ask";
+const API_URL = "https://bangla-ai-app-2ck2.onrender.com/...";
 
 const chatBox = document.getElementById("chatBox");
 const chatForm = document.getElementById("chatForm");

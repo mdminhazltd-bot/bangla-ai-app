@@ -130,9 +130,19 @@ body{
   margin:0 24px 0px; background:var(--surface-2); border:1px solid var(--border); border-radius:18px;
   padding:12px 16px; display:flex; align-items:center; gap:12px;
 }
-.tool-icons{ display:flex; gap:12px; flex-shrink:0; }
-.tool-icons svg{ width:18px; height:18px; color:var(--text-2); cursor:pointer; }
-.tool-icons svg:hover{ color:var(--text-1); }
+.tool-icons{ display:flex; gap:8px; flex-shrink:0; }
+.tool-btn{
+  background:transparent; border:none; padding:6px; border-radius:8px;
+  color:var(--text-2); cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:background .15s ease, color .15s ease;
+}
+.tool-btn svg{ width:18px; height:18px; pointer-events:none; }
+.tool-btn:hover{ background:var(--surface); color:var(--text-1); }
+.tool-btn.listening{ color:#fff; background:var(--accent-grad); animation:mic-pulse 1s infinite; }
+@keyframes mic-pulse{
+  0%,100%{ box-shadow:0 0 0 0 rgba(236,72,153,0.5); }
+  50%{ box-shadow:0 0 0 6px rgba(236,72,153,0); }
+}
 #userInput{
   flex:1; background:transparent; border:none; outline:none; color:var(--text-1);
   font-family:'Hind Siliguri', sans-serif; font-size:14.5px;
@@ -156,48 +166,49 @@ body{
   .app{ height:96vh; margin:8px auto; border-radius:18px; }
 }
 
-/* ==================================================== */
-/* ================ নতুন যোগ করা অংশ ================== */
-/* ==================================================== */
-
-/* ---- Modal ---- */
+/* ================= Settings/About/Favorites modal ================= */
 .modal-overlay{
-  position:fixed; inset:0; background:rgba(11,10,26,0.7);
+  position:fixed; inset:0; background:rgba(0,0,0,0.6);
   display:flex; align-items:center; justify-content:center;
-  z-index:999; backdrop-filter:blur(3px);
+  z-index:100; padding:20px;
 }
 .modal-box{
-  background:var(--surface); border:1px solid var(--border);
-  border-radius:var(--radius-lg); padding:26px; width:90%; max-width:400px;
-  position:relative; box-shadow:0 30px 80px -20px rgba(0,0,0,0.7);
+  width:100%; max-width:400px;
+  background:var(--surface-2);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:26px 24px;
+  position:relative;
+  box-shadow:0 40px 100px -30px rgba(0,0,0,0.7);
 }
-.modal-box h2{ font-family:'Baloo Da 2', sans-serif; font-size:19px; margin-bottom:10px; }
-.modal-sub{ font-size:13.5px; color:var(--text-2); line-height:1.6; margin-bottom:16px; }
 .modal-close{
-  position:absolute; top:14px; right:16px; background:transparent; border:none;
-  color:var(--text-3); font-size:16px; cursor:pointer;
+  position:absolute; top:14px; right:14px;
+  background:transparent; border:none; color:var(--text-2);
+  font-size:16px; cursor:pointer; padding:4px 8px; border-radius:8px;
 }
-.modal-close:hover{ color:var(--text-1); }
+.modal-close:hover{ background:var(--surface); color:var(--text-1); }
+.modal-box h2{
+  font-family:'Baloo Da 2', sans-serif; font-size:19px; margin-bottom:10px;
+}
+.modal-sub{ font-size:13.5px; color:var(--text-2); line-height:1.6; margin-bottom:16px; }
 .empty-state{
-  font-size:13px; color:var(--text-3); background:var(--surface-2);
-  border-radius:var(--radius-sm); padding:16px; text-align:center;
+  text-align:center; font-size:13px; color:var(--text-3);
+  padding:20px; background:var(--surface); border-radius:12px;
 }
 .modal-action-btn{
-  width:100%; background:var(--accent-grad); color:#fff; border:none;
-  border-radius:12px; padding:12px; font-size:14px; font-weight:600; cursor:pointer;
+  width:100%; border:none; border-radius:10px; padding:11px;
+  background:var(--accent-grad); color:#fff; font-weight:600; font-size:14px; cursor:pointer;
 }
-.modal-action-btn.danger{
-  background:#ef4444; box-shadow:none;
-}
+.modal-action-btn.danger{ background:linear-gradient(135deg, #F87171, #EF4444); }
 
-/* ---- Light mode override ---- */
+/* ================= Light mode override ================= */
 body[data-theme="light"]{
   --bg:#F5F3FB;
   --surface:#FFFFFF;
-  --surface-2:#F1EEFB;
+  --surface-2:#F0EDFB;
   --border:rgba(0,0,0,0.08);
   --border-soft:rgba(0,0,0,0.05);
-  --text-1:#1E1B2E;
+  --text-1:#1D1A3D;
   --text-2:#5B5578;
-  --text-3:#8A84A8;
+  --text-3:#8B85A8;
 }

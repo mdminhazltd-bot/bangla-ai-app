@@ -49,9 +49,7 @@
 
     <div class="history-block">
       <div class="history-label">সাম্প্রতিক</div>
-      <div class="history-item">রান্নার রেসিপি খুঁজছি</div>
-      <div class="history-item">ইংরেজি অনুবাদ সাহায্য</div>
-      <div class="history-item">প্রবন্ধ লেখার টিপস</div>
+      <div id="historyList"></div>
     </div>
 
     <div class="sidebar-footer">
@@ -90,9 +88,15 @@
 
     <form class="chat-input-area" id="chatForm">
       <div class="tool-icons">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a7 7 0 0 1-14 0M12 18v3"/></svg>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>
+        <button type="button" class="tool-btn" id="imgToolBtn" title="ছবি (শীঘ্রই আসছে)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        </button>
+        <button type="button" class="tool-btn" id="micToolBtn" title="ভয়েস দিয়ে লিখুন">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a7 7 0 0 1-14 0M12 18v3"/></svg>
+        </button>
+        <button type="button" class="tool-btn" id="fileToolBtn" title="ফাইল (শীঘ্রই আসছে)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>
+        </button>
       </div>
       <input
           type="text"
@@ -109,12 +113,6 @@
 
 </div>
 
-<script>
-  document.getElementById('newChatBtn').addEventListener('click', function(){
-    document.getElementById('chatBox').innerHTML =
-      '<div class="message bot-message"><div class="bubble">নতুন চ্যাট শুরু হয়েছে। আপনার প্রশ্ন লিখুন।</div></div>';
-  });
-</script>
 <script src="script.js"></script>
 
 <script>
@@ -223,6 +221,113 @@
       document.body.setAttribute('data-theme', isOff ? 'light' : 'dark');
     });
   }
+
+  /* ================= Real chat history (saved in this browser) ================= */
+  const WELCOME_HTML = '<div class="message bot-message"><div class="bubble">আসসালামু আলাইকুম! আমি আপনার বাংলা AI অ্যাসিস্ট্যান্ট। যেকোনো প্রশ্ন জিজ্ঞেস করতে পারেন। 😊</div></div>';
+
+  function getConversations(){
+    try{ return JSON.parse(localStorage.getItem('bangla_ai_conversations')) || []; }
+    catch(e){ return []; }
+  }
+  function saveConversations(list){
+    localStorage.setItem('bangla_ai_conversations', JSON.stringify(list.slice(0, 20)));
+  }
+  let currentConvo = { id: Date.now(), title: null, messages: [] };
+  let loadingHistory = false; // prevents re-saving while replaying a stored conversation
+
+  function persistCurrentConvo(){
+    if(currentConvo.messages.length === 0) return;
+    const list = getConversations();
+    const idx = list.findIndex(c => c.id === currentConvo.id);
+    if(idx >= 0) list[idx] = currentConvo; else list.unshift(currentConvo);
+    saveConversations(list);
+    renderHistory();
+  }
+  function renderHistory(){
+    const list = getConversations();
+    const el = document.getElementById('historyList');
+    if(!el) return;
+    if(list.length === 0){
+      el.innerHTML = '<div class="history-item" style="cursor:default;color:var(--text-3);">এখনো কোনো ইতিহাস নেই</div>';
+      return;
+    }
+    el.innerHTML = '';
+    list.forEach(convo => {
+      const div = document.createElement('div');
+      div.className = 'history-item';
+      div.textContent = convo.title || 'নতুন চ্যাট';
+      div.title = convo.title || '';
+      div.addEventListener('click', () => loadConversation(convo));
+      el.appendChild(div);
+    });
+  }
+  function loadConversation(convo){
+    loadingHistory = true;
+    currentConvo = convo;
+    const box = document.getElementById('chatBox');
+    box.innerHTML = '';
+    convo.messages.forEach(m => addMessage(m.text, m.sender));
+    loadingHistory = false;
+  }
+
+  // Wrap the existing addMessage() from script.js so every message also gets saved
+  const _originalAddMessage = window.addMessage;
+  window.addMessage = function(text, sender){
+    _originalAddMessage(text, sender);
+    if(loadingHistory) return;
+    currentConvo.messages.push({ text, sender });
+    if(!currentConvo.title && sender === 'user') currentConvo.title = text.slice(0, 40);
+    persistCurrentConvo();
+  };
+
+  document.getElementById('newChatBtn').addEventListener('click', function(){
+    currentConvo = { id: Date.now(), title: null, messages: [] };
+    document.getElementById('chatBox').innerHTML = WELCOME_HTML;
+  });
+
+  renderHistory();
+
+  /* ================= Voice input (Web Speech API) ================= */
+  const micBtn = document.getElementById('micToolBtn');
+  const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if(SpeechRec && micBtn){
+    const recognizer = new SpeechRec();
+    recognizer.lang = 'bn-BD';
+    recognizer.interimResults = false;
+    recognizer.maxAlternatives = 1;
+    let listening = false;
+
+    micBtn.addEventListener('click', () => {
+      if(listening) return;
+      listening = true;
+      micBtn.classList.add('listening');
+      recognizer.start();
+    });
+    recognizer.addEventListener('result', (e) => {
+      const transcript = e.results[0][0].transcript;
+      document.getElementById('userInput').value = transcript;
+    });
+    recognizer.addEventListener('end', () => {
+      listening = false;
+      micBtn.classList.remove('listening');
+    });
+    recognizer.addEventListener('error', () => {
+      listening = false;
+      micBtn.classList.remove('listening');
+    });
+  } else if(micBtn){
+    micBtn.addEventListener('click', () => {
+      alert('আপনার ব্রাউজারে ভয়েস ইনপুট সাপোর্ট করে না। Chrome/Edge ব্যবহার করে দেখুন।');
+    });
+  }
+
+  /* Image / file buttons: placeholder until backend supports it */
+  const imgBtn = document.getElementById('imgToolBtn');
+  const fileBtn = document.getElementById('fileToolBtn');
+  if(imgBtn) imgBtn.addEventListener('click', () => alert('ছবি আপলোড ফিচারটি শীঘ্রই আসছে।'));
+  if(fileBtn) fileBtn.addEventListener('click', () => alert('ফাইল আপলোড ফিচারটি শীঘ্রই আসছে।'));
+
 })();
 </script>
 

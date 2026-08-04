@@ -220,3 +220,80 @@ body[data-theme="light"]{
   font-weight:600; cursor:pointer; margin-bottom:10px;
 }
 .install-app-btn:hover{ background:var(--accent-grad); border-color:transparent; color:#fff; }
+
+/* ==================================================== */
+/* ============ ৩D / এলিভেটেড লুক (নতুন) ============= */
+/* ==================================================== */
+
+.app{
+  box-shadow:
+    0 50px 120px -30px rgba(0,0,0,0.75),
+    0 20px 40px -15px rgba(139,92,246,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.chat-box{
+  background: linear-gradient(180deg, rgba(255,255,255,0.015), transparent 120px);
+}
+
+.message{ perspective: 800px; }
+
+.bubble{
+  box-shadow:
+    0 8px 20px -8px rgba(0,0,0,0.5),
+    0 2px 6px -2px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+  transform: translateZ(0);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.bubble:hover{
+  transform: translateY(-2px);
+  box-shadow:
+    0 14px 28px -10px rgba(0,0,0,0.55),
+    0 4px 10px -4px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.user-message .bubble{
+  box-shadow:
+    0 10px 24px -8px rgba(236,72,153,0.45),
+    0 3px 8px -2px rgba(139,92,246,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.user-message .bubble:hover{
+  box-shadow:
+    0 16px 32px -10px rgba(236,72,153,0.5),
+    0 5px 12px -3px rgba(139,92,246,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.18);
+}
+
+.chat-input-area{
+  box-shadow:
+    0 12px 30px -12px rgba(0,0,0,0.6),
+    inset 0 1px 0 rgba(255,255,255,0.04),
+    inset 0 -1px 0 rgba(0,0,0,0.2);
+}
+
+#sendBtn{
+  box-shadow:
+    0 8px 18px -6px rgba(236,72,153,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.25);
+}
+#sendBtn:hover{
+  box-shadow:
+    0 12px 24px -8px rgba(236,72,153,0.6),
+    inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+.new-chat{
+  box-shadow:
+    0 10px 24px -10px rgba(139,92,246,0.6),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.upgrade-card{
+  box-shadow: 0 10px 30px -14px rgba(139,92,246,0.35);
+}
+
+.sidebar{
+  box-shadow: inset -1px 0 0 rgba(255,255,255,0.03);
+}

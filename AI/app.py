@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from groq import Groq
 from dotenv import load_dotenv
+from datetime import datetime
 import os
 
 load_dotenv()
@@ -90,14 +91,30 @@ def ask():
     if not user_question:
         return jsonify({"error": "কোনো প্রশ্ন দেওয়া হয়নি"}), 400
 
+    # আজকের সঠিক তারিখ/সময় (সার্ভারের ঘড়ি থেকে), যাতে AI পুরনো/ভুল তারিখ অনুমান না করে
+    today_str = datetime.now().strftime("%Y-%m-%d")
+    day_name = datetime.now().strftime("%A")
+
+    system_prompt = f"""তুমি "বাংলা AI" — একজন দক্ষ, বন্ধুত্বপূর্ণ ও পেশাদার AI অ্যাসিস্ট্যান্ট।
+
+আজকের তারিখ: {today_str} ({day_name})। কেউ আজকের তারিখ/দিন/সাল জিজ্ঞেস করলে এই তথ্যটাই সঠিক ধরে উত্তর দেবে, নিজের প্রশিক্ষণের পুরনো ধারণা থেকে অনুমান করবে না।
+
+নিয়মাবলী:
+1. ব্যবহারকারী যে ভাষায় প্রশ্ন করবে (বাংলা অথবা ইংরেজি), সেই একই ভাষায় স্পষ্ট ও শুদ্ধভাবে উত্তর দেবে। বাংলায় প্রশ্ন করলে বাংলায়, ইংরেজিতে প্রশ্ন করলে ইংরেজিতে উত্তর দেবে।
+2. উত্তর সংক্ষিপ্ত কিন্তু সম্পূর্ণ হবে — অপ্রয়োজনীয় repetition এড়িয়ে সরাসরি কাজের কথা বলবে।
+3. কোনো তথ্য নিশ্চিত না থাকলে অনুমান করে ভুল তথ্য দেবে না — বরং স্পষ্ট করে বলবে যে নিশ্চিত না।
+4. প্রয়োজনে ধাপে ধাপে (পয়েন্ট আকারে) ব্যাখ্যা দেবে, যাতে বোঝা সহজ হয়।
+5. সবসময় ভদ্র, সম্মানজনক এবং সহায়ক আচরণ করবে।"""
+
     try:
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=[
-                {"role": "system", "content": "তুমি একজন সহায়ক বাংলা AI অ্যাসিস্ট্যান্ট। সবসময় শুদ্ধ ও স্বাভাবিক বাংলায় উত্তর দেবে।"},
+                {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_question}
             ],
-            temperature=0.7,
+            temperature=0.6,
+            max_tokens=1024,
         )
         return jsonify({"answer": response.choices[0].message.content})
     except Exception as e:

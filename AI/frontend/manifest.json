@@ -1,0 +1,25 @@
+{
+  "name": "বাংলা AI",
+  "short_name": "বাংলা AI",
+  "description": "আপনার বাংলা AI সহযোগী — প্রশ্ন জিজ্ঞেস করুন, উত্তর পান, বাংলায়।",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0B0A1A",
+  "theme_color": "#8B5CF6",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

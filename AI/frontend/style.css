@@ -212,3 +212,11 @@ body[data-theme="light"]{
   --text-2:#5B5578;
   --text-3:#8B85A8;
 }
+
+/* ---- Install app button (PWA) ---- */
+.install-app-btn{
+  width:100%; background:var(--surface-2); border:1px solid var(--border);
+  color:var(--text-1); border-radius:12px; padding:10px; font-size:13.5px;
+  font-weight:600; cursor:pointer; margin-bottom:10px;
+}
+.install-app-btn:hover{ background:var(--accent-grad); border-color:transparent; color:#fff; }

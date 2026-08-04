@@ -18,7 +18,7 @@
 
 <div class="app">
 
-  <div class="sidebar">
+  <div class="sidebar" id="sidebar">
     <div class="brand">
       <div class="brand-mark">
         <svg viewBox="0 0 24 24" fill="none"><path d="M12 3c-4 0-7 2.7-7 6.2 0 2.1 1.1 4 2.9 5.1L7 20l4.3-2.1c.2 0 .5 0 .7 0 4 0 7-2.7 7-6.2S16 3 12 3z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>
@@ -70,11 +70,18 @@
     </div>
   </div>
 
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
   <div class="main">
     <div class="topbar">
-      <div>
-        <h1>👋 আপনাকে স্বাগতম!</h1>
-        <p>আমি আপনার বাংলা AI অ্যাসিস্ট্যান্ট। আপনি যা জানতে চান, আমাকে জিজ্ঞেস করুন।</p>
+      <div class="topbar-left">
+        <button class="menu-toggle-btn" id="menuToggleBtn" aria-label="মেনু খুলুন">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div>
+          <h1>👋 আপনাকে স্বাগতম!</h1>
+          <p>আমি আপনার বাংলা AI অ্যাসিস্ট্যান্ট। আপনি যা জানতে চান, আমাকে জিজ্ঞেস করুন।</p>
+        </div>
       </div>
       <div class="model-pill"><span class="dot"></span> বাংলা AI · প্রো</div>
     </div>
@@ -333,6 +340,33 @@
   if(imgBtn) imgBtn.addEventListener('click', () => alert('ছবি আপলোড ফিচারটি শীঘ্রই আসছে।'));
   if(fileBtn) fileBtn.addEventListener('click', () => alert('ফাইল আপলোড ফিচারটি শীঘ্রই আসছে।'));
 
+})();
+
+/* ================= Mobile sidebar toggle ================= */
+(function(){
+  const menuBtn = document.getElementById('menuToggleBtn');
+  const sidebar = document.getElementById('sidebar');
+  const backdrop = document.getElementById('sidebarBackdrop');
+  if(!menuBtn || !sidebar || !backdrop) return;
+
+  function openSidebar(){
+    sidebar.classList.add('open');
+    backdrop.classList.add('show');
+  }
+  function closeSidebar(){
+    sidebar.classList.remove('open');
+    backdrop.classList.remove('show');
+  }
+  menuBtn.addEventListener('click', () => {
+    sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+  });
+  backdrop.addEventListener('click', closeSidebar);
+  // sidebar-এর কোনো আইটেমে ক্লিক করলে (মোবাইলে) মেনু বন্ধ হয়ে যাক
+  sidebar.addEventListener('click', (e) => {
+    if(window.innerWidth <= 900 && (e.target.closest('.nav-item') || e.target.closest('.history-item') || e.target.closest('.new-chat'))){
+      closeSidebar();
+    }
+  });
 })();
 
 /* ================= PWA: register service worker + install button ================= */
